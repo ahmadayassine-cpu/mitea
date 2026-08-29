@@ -1,0 +1,14 @@
+Real photography goes here.
+
+Nothing in this folder yet — every image slot on the site currently renders a
+branded placeholder. To swap in a real photo:
+
+1. Drop the file in this folder, e.g. `chizu-strawberry-green.jpg`.
+2. Set the matching `image` field to `/images/chizu-strawberry-green.jpg`:
+   - menu items      → lib/catalog/items.ts
+   - category tiles  → lib/catalog/categories.ts
+   - home page art   → components/home/sections.tsx (the `MediaSlot` calls)
+
+No component changes are needed; `components/ui/media-slot.tsx` switches to
+`next/image` as soon as `src` is set. Item cards are 4:3, category tiles 3:2,
+gallery tiles 1:1, hero 4:3.
