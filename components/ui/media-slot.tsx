@@ -3,11 +3,12 @@ import Image from "next/image";
 /**
  * The image slot used everywhere on the site.
  *
- * Mitea has no photography yet, so every slot falls back to a branded
- * placeholder: a gradient mixed from the active preset's own tokens, with an
- * emoji picked from the item's name. The point is that the *layout* is final —
- * when real photos arrive, setting `src` swaps them in with no other change,
- * and nothing has to be re-laid-out around a different aspect ratio.
+ * Most of the menu has no photography yet, so a slot without a `src` falls
+ * back to a branded placeholder: a gradient mixed from the active preset's own
+ * tokens, with an emoji picked from the item's name. The point is that the
+ * *layout* is final — when real photos arrive, setting `src` swaps them in with
+ * no other change, and nothing has to be re-laid-out around a different aspect
+ * ratio.
  *
  * The gradient is seeded from `seed`, so each item gets a visibly different
  * tile rather than forty identical rectangles, while still being drawn purely

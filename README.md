@@ -123,9 +123,11 @@ prices and nothing else, so these are placeholders:
   County rate and must be confirmed before launch)
 - Testimonials and catering packages — `components/home/sections.tsx`,
   `app/catering/page.tsx`
-- Photography — the logo, shop interior and mochi donut photos are real (pulled
-  from the Square site); every other image slot is still a placeholder. See
-  `public/images/.gitkeep`
+- Photography — the logo and shop interior are real (from the Square site), as
+  are the ten photos lifted from the owner's menu document: one per mochi donut
+  box, and one per drink series shared across that series' items. Only Chizu is
+  still on placeholders. The single-donut shot is watermarked stock and needs
+  replacing. See `public/images/.gitkeep`
 
 Item **names and prices** are transcribed from the owner's document and should
 only change against a new source.

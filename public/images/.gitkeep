@@ -1,7 +1,10 @@
 Real photography goes here.
 
-Nothing in this folder yet — every image slot on the site currently renders a
-branded placeholder. To swap in a real photo:
+What is real so far: the logo and shop interior (from the Square site), and the
+ten photos from the owner's menu document "menu para pantallas.pdf" — one per
+mochi donut box, and one per drink series, shared by every item in that series
+the way the document does it. Chizu has no photo in the document, so those items
+still render a branded placeholder. To swap in a real photo:
 
 1. Drop the file in this folder, e.g. `chizu-strawberry-green.jpg`.
 2. Set the matching `image` field to `/images/chizu-strawberry-green.jpg`:
@@ -12,3 +15,7 @@ branded placeholder. To swap in a real photo:
 No component changes are needed; `components/ui/media-slot.tsx` switches to
 `next/image` as soon as `src` is set. Item cards are 4:3, category tiles 3:2,
 gallery tiles 1:1, hero 4:3.
+
+TODO(owner): `single-mochi-donut.jpg` came out of the menu document carrying a
+SimplyHomeCooked.com watermark — it is a stock photo, not the shop's own.
+Replace it before launch.
