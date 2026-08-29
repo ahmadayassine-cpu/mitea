@@ -28,7 +28,7 @@ export function Hero() {
         <div>
           <Eyebrow>Fresh brewed daily</Eyebrow>
           <h1 className="font-display text-4xl leading-[1.05] font-bold text-balance sm:text-5xl lg:text-6xl">
-            Boba worth the walk.
+            Mitea worth the walk.
           </h1>
           <p className="mt-5 max-w-lg text-lg text-content-muted text-pretty">
             {SITE.tagline} Every cup shaken to order — pick your sugar, your ice and
@@ -181,7 +181,7 @@ export function CateringCta() {
             Catering
           </p>
           <h2 className="font-display text-3xl font-bold text-balance sm:text-4xl">
-            Bring the boba bar to them
+            Bring the Mitea bar to them
           </h2>
           <p className="mt-4 text-lg text-on-inverse-muted text-pretty">
             Office parties, birthdays, graduations. We&apos;ll set up with a spread of

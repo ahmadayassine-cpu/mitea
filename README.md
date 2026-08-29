@@ -1,6 +1,6 @@
 # Mitea
 
-Online ordering site for Mitea — a boba tea and mochi donut shop. Customers
+Online ordering site for Mitea — a tea and mochi donut shop. Customers
 browse the menu, customise drinks (sugar, ice, size, milk, toppings) and place
 a pickup order.
 
@@ -70,7 +70,7 @@ The default preset, **mitea**, is sampled from the shop's own logo
 | --- | --- | --- |
 | "MiTea" wordmark and outlines | `#5a412b` | `--primary`, `--focus`, shadow tint |
 | mochi donut | `#fc9994` | `--border-highlight`; pink section bands |
-| boba cup body | `#fee7c5` | `--on-primary`, `--on-inverse` |
+| cup body | `#fee7c5` | `--on-primary`, `--on-inverse` |
 | milk tea in the cup | `#edc391` | warm surface step |
 | cup lid | `#bfd1ab` | success / vegan states |
 | straw | `#fab58b` | accent tint |

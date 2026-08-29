@@ -8,7 +8,7 @@
 
 export type Money = number;
 
-/** A single choice within a modifier group, e.g. "Large" or "Boba". */
+/** A single choice within a modifier group, e.g. "Large" or "Mitea". */
 export interface ModifierOption {
   id: string;
   name: string;

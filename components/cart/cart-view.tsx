@@ -111,7 +111,7 @@ function CartRow({
   const priced = priceCartLine(line);
   const groups = getModifierGroups(item.modifierGroupIds);
 
-  // Flattened to a readable summary: "Large · 50% · Boba, Cheese foam".
+  // Flattened to a readable summary: "Large · 50% · Mitea, Cheese foam".
   const chosen = groups
     .flatMap((group) =>
       (line.selections[group.id] ?? [])

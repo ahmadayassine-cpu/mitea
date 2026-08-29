@@ -26,7 +26,7 @@ export default function OurStoryPage() {
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-content-muted text-pretty">
             Tea brewed hours ago. Pearls out of a bag. Sugar you couldn&apos;t adjust.
-            We thought a neighbourhood boba shop could do better than that.
+            We thought a neighbourhood Mitea shop could do better than that.
           </p>
         </Container>
       </div>

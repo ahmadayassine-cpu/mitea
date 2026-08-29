@@ -49,7 +49,7 @@ export const CATEGORIES: MenuCategory[] = [
     id: "smoothie",
     slug: "smoothie-series",
     name: "Smoothie Series",
-    description: "Blended thick. Add boba and it becomes dessert.",
+    description: "Blended thick. Add mitea and it becomes dessert.",
     image: null,
     sortOrder: 6,
   },
