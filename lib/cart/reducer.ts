@@ -38,7 +38,7 @@ function linesReducer(
   switch (action.type) {
     case "add": {
       // Identical configurations merge into one line rather than stacking up as
-      // separate rows — two "Classic, 50%, boba" reads as "× 2".
+      // separate rows — two "Classic, 50%, mitea" reads as "× 2".
       const twin = state.find((line) => isSameConfiguration(line, action.line));
       if (twin) {
         return state.map((line) =>

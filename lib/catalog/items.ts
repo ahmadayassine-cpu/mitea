@@ -440,7 +440,7 @@ export const ITEMS: MenuItem[] = [
     id: "sm-strawberry",
     slug: "strawberry-smoothie",
     name: "Strawberry Smoothie",
-    description: "Strawberries blended cold. Add boba and it becomes dessert.",
+    description: "Strawberries blended cold. Add mitea and it becomes dessert.",
     basePrice: 800,
     categoryId: "smoothie",
     image: null,

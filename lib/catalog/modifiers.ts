@@ -66,11 +66,11 @@ export const MODIFIER_GROUPS: ModifierGroup[] = [
     min: 0,
     max: 4,
     options: [
-      { id: "top-boba", name: "Boba", priceDelta: 75 },
+      { id: "top-mitea", name: "Mitea", priceDelta: 75 },
       { id: "top-lychee-jelly", name: "Lychee jelly", priceDelta: 75 },
       { id: "top-grass-jelly", name: "Grass jelly", priceDelta: 75 },
       { id: "top-aloe", name: "Aloe vera", priceDelta: 75 },
-      { id: "top-popping", name: "Popping boba", priceDelta: 85 },
+      { id: "top-popping", name: "Popping mitea", priceDelta: 85 },
       { id: "top-red-bean", name: "Red bean", priceDelta: 85 },
       { id: "top-pudding", name: "Egg pudding", priceDelta: 85 },
       { id: "top-cheese-foam", name: "Cheese foam", priceDelta: 125 },

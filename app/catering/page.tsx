@@ -12,7 +12,7 @@ import { SITE } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Catering",
-  description: `Boba and mochi donut catering from ${SITE.name} for offices, parties and events.`,
+  description: `Mitea and mochi donut catering from ${SITE.name} for offices, parties and events.`,
 };
 
 /**
@@ -27,7 +27,7 @@ const PACKAGES = [
     body: "A tray of pre-made drinks in your pick of four flavours, plus two dozen mochi donuts. Delivered cold and ready.",
   },
   {
-    title: "The Boba Bar",
+    title: "The Mitea Bar",
     people: "25 – 75 people",
     body: "We set up on site and make drinks to order — sugar, ice and toppings chosen by each guest, same as in the shop.",
   },
@@ -45,7 +45,7 @@ export default function CateringPage() {
         <Container>
           <Eyebrow>Catering</Eyebrow>
           <h1 className="font-display text-4xl font-bold text-balance sm:text-5xl">
-            Bring the boba bar to them
+            Bring the Mitea bar to them
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-content-muted text-pretty">
             Office parties, birthdays, graduations, weddings. We bring the tea, the

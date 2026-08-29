@@ -38,7 +38,7 @@ export const SITE = {
    * on a site that cannot sell it is worse branding than a narrower true claim.
    * Swap both strings below once the food categories land.
    */
-  tagline: "Boba, brewed fresh. Mochi donuts, fried to order.",
+  tagline: "Mitea, brewed fresh. Mochi donuts, fried to order.",
   description:
     "Mitea serves fresh-brewed milk teas, fruit teas, cheese-foam Chizu drinks and mochi donuts made through the day. Order online for pickup.",
 
