@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+/* Tailwind v4 auto-detects source files from the project root, which already
+   covers `app/`, `components/` and `lib/`. The explicit `@source` lines below
+   exist so the scan does not depend on that inference — a class that only ever
+   appears in a `components/` file still gets a utility generated. */
+@source "../app";
+@source "../components";
+@source "../lib";

@@ -1,0 +1,412 @@
+/* ==========================================================================
+   Mitea design tokens.
+
+   Imported by `app/globals.css` immediately after `@import "tailwindcss"`.
+
+   Three layers, and the rule that makes theming work: a component may only
+   ever reference Layer 2. If a component needs a colour that Layer 2 does not
+   name, the fix is to add a Layer 2 token — never to inline a hex value. That
+   discipline is what lets a whole preset swap change the brand without any
+   component file being touched.
+
+   ---------------------------------------------------------------------------
+   Where this palette comes from
+
+   Every brand value below was sampled out of the shop's own logo
+   (public/images/logo.png), not chosen by eye:
+
+     #5a412b  the "MiTea" wordmark and every outline   -> cocoa 600
+     #fc9994  the mochi donut                          -> blossom 400
+     #fee7c5  the boba cup body                        -> cream 200
+     #edc391  the milk tea inside the cup              -> cream 300
+     #bfd1ab  the cup lid                              -> sage 300
+     #fab58b  the straw                                -> straw 400
+     #f0b66d  the banh mi crust                        -> gold 400
+
+   The shop interior (public/images/shop-interior.jpg) is cherry-blossom pink
+   with white furniture and warm wood, which is why pink carries the section
+   bands rather than sitting only in badges.
+
+   NOTE: the Square site's published `primaryColor` is #cdf4cf, a pale mint.
+   That value is Square's own default — it also shows up in the auto-generated
+   app icon, which is a plain mint circle with the site title set in Inter,
+   not the shop's logo. It appears nowhere in the real brand, so it is unused.
+   ========================================================================== */
+
+/* ==========================================================================
+   Layer 1 — Primitives
+   Every literal colour in the codebase lives here and nowhere else.
+   ========================================================================== */
+:root {
+  /* Cocoa — the wordmark brown. The most-used colour in the logo and so the
+     brand's ink. 600 is the sampled value; the rest of the ramp is built
+     around it for type, borders and the footer. */
+  --mitea-cocoa-900: #2b1e14;
+  --mitea-cocoa-800: #3b2a1b;
+  --mitea-cocoa-700: #4a3423;
+  --mitea-cocoa-600: #5a412b; /* logo wordmark */
+  --mitea-cocoa-500: #74553a;
+  /* Darkened from the ramp's even step so `--content-subtle` clears AA on
+     every surface it lands on, cream-100 included (4.73:1). */
+  --mitea-cocoa-400: #876848;
+  --mitea-cocoa-300: #c4a888;
+  --mitea-cocoa-200: #e0cbb2;
+  --mitea-cocoa-100: #f2e8dc;
+
+  /* Blossom — the donut pink, and the colour of the shop's walls. 400 is the
+     sampled value. It is a *fill*, not a type colour: the darker steps exist
+     so pink-flavoured text still passes contrast. */
+  --mitea-blossom-900: #4d1d1a;
+  --mitea-blossom-800: #6e2a26;
+  --mitea-blossom-700: #9c3d37;
+  --mitea-blossom-600: #c9524a;
+  --mitea-blossom-500: #ea6a61;
+  --mitea-blossom-400: #fc9994; /* logo donut */
+  --mitea-blossom-300: #fdb8b4;
+  --mitea-blossom-200: #fed4d1;
+  --mitea-blossom-100: #ffeceb;
+  --mitea-blossom-50: #fff7f6;
+
+  /* Cream — the cup, and every warm surface on the site. */
+  --mitea-cream-300: #edc391; /* logo milk tea */
+  --mitea-cream-200: #fee7c5; /* logo cup body */
+  --mitea-cream-100: #fdf5e8;
+  --mitea-cream-50: #fffbf5;
+  --mitea-white: #ffffff;
+
+  /* Sage — the cup lid. Used for confirmed/vegan states so the logo's green
+     does real work rather than decorating. */
+  --mitea-sage-700: #46603a;
+  --mitea-sage-500: #7f9c6b;
+  --mitea-sage-300: #bfd1ab; /* logo lid */
+  --mitea-sage-100: #e8efe0;
+
+  /* Straw and crust. Small accents, and the warning state. */
+  --mitea-straw-400: #fab58b; /* logo straw */
+  --mitea-gold-400: #f0b66d; /* logo banh mi crust */
+  --mitea-gold-700: #7a4d00;
+  --mitea-gold-100: #fdefd0;
+
+  /* Taro — kept only for the alternate preset in Layer 3. */
+  --mitea-taro-800: #3f2560;
+  --mitea-taro-700: #573484;
+  --mitea-taro-600: #6b44a0;
+  --mitea-taro-400: #ad8fd6;
+  --mitea-taro-200: #e2d4f5;
+  --mitea-taro-100: #f1e9fb;
+
+  /* Error. Deliberately cooler and deeper than any blossom step so an error
+     never reads as ordinary brand pink. */
+  --mitea-error-bg: #fcdedb;
+  --mitea-error-ink: #8f1710;
+}
+
+/* ==========================================================================
+   Layer 2 — Semantic tokens
+   What components actually mean. The bare `:root` block below is the complete
+   set; a preset in Layer 3 re-declares a subset of it and inherits the rest,
+   so adding a token here can never leave a preset with a hole.
+
+   These values are the **mitea** preset — the logo's own palette. It is the
+   default, so it lives here rather than in a `[data-theme]` block.
+   ========================================================================== */
+:root {
+  color-scheme: light;
+
+  /* Surfaces, back to front. The page ground is a warm off-white rather than
+     pure white — the logo's cup and the shop's wood both sit warm, and true
+     white next to cream reads as a mistake. */
+  --surface: var(--mitea-cream-50);
+  --surface-raised: var(--mitea-white);
+  --surface-sunken: var(--mitea-cream-100);
+  --surface-container: var(--mitea-blossom-200);
+  --surface-inverse: var(--mitea-cocoa-900);
+
+  /* Content */
+  --content: var(--mitea-cocoa-800);
+  --content-muted: var(--mitea-cocoa-500);
+  --content-subtle: var(--mitea-cocoa-400);
+  /* Eyebrows and small caps: brand-adjacent, but dark enough to read. */
+  --content-accent: var(--mitea-blossom-700);
+  --on-inverse: var(--mitea-cream-200);
+  --on-inverse-muted: var(--mitea-cocoa-300);
+
+  /* Brand. A filled button is the wordmark brown with cream type — the logo's
+     own pairing. */
+  --primary: var(--mitea-cocoa-600);
+  --primary-hover: var(--mitea-cocoa-700);
+  --on-primary: var(--mitea-cream-200);
+  --primary-soft: var(--mitea-cocoa-100);
+  --on-primary-soft: var(--mitea-cocoa-800);
+
+  /* Accent — the donut pink, in its type-safe step for filled chips. The
+     sampled #fc9994 itself appears as `--border-highlight` and in the section
+     bands, where it is a fill and can be its true self. */
+  --accent: var(--mitea-blossom-700);
+  --accent-hover: var(--mitea-blossom-800);
+  --on-accent: var(--mitea-white);
+  --accent-soft: var(--mitea-blossom-200);
+  --on-accent-soft: var(--mitea-blossom-800);
+
+  /* Lines */
+  --border: var(--mitea-cocoa-200);
+  --border-strong: var(--mitea-cocoa-300);
+  --border-soft: var(--mitea-cocoa-200);
+  --border-highlight: var(--mitea-blossom-400);
+  --focus: var(--mitea-cocoa-600);
+
+  /* Feedback. Success borrows the lid green; warning borrows the crust. */
+  --success-bg: var(--mitea-sage-100);
+  --success-fg: var(--mitea-sage-700);
+  --danger-bg: var(--mitea-error-bg);
+  --danger-fg: var(--mitea-error-ink);
+  --warning-bg: var(--mitea-gold-100);
+  --warning-fg: var(--mitea-gold-700);
+
+  /* Shape. The logo is drawn in soft, chunky, fully-rounded forms, so the UI
+     is rounded to match. (The Square site's theme config asks for 0px corners;
+     that same config also carries the mint the brand does not use. If the flat
+     look is wanted after all, these four values are the only edit.)
+
+     These sit outside Tailwind's own `--radius-*` namespace on purpose: a
+     Layer 2 var sharing a name with the `@theme` key that maps to it would
+     resolve to `var(--x)` referencing itself. */
+  --shape-control: 0.75rem;
+  --shape-card: 1rem;
+  --shape-image: 1rem;
+  --shape-pill: 9999px;
+
+  /* Tints — a base colour that only ever appears at low alpha. */
+  --tint-brand: var(--mitea-cocoa-600);
+  --tint-ink: var(--mitea-cocoa-900);
+
+  /* Elevation, tinted with the brand brown rather than neutral black. */
+  --elevation-card: 0 2px 8px color-mix(in oklab, var(--tint-brand) 8%, transparent);
+  --elevation-card-hover: 0 12px 28px color-mix(in oklab, var(--tint-brand) 18%, transparent);
+  --elevation-raised: 0 3px 10px color-mix(in oklab, var(--tint-brand) 10%, transparent);
+  --elevation-overlay: 0 20px 50px color-mix(in oklab, var(--tint-ink) 28%, transparent);
+  --elevation-control: 0 1px 3px color-mix(in oklab, var(--tint-ink) 10%, transparent);
+}
+
+/* ==========================================================================
+   Layer 3 — Presets
+   Selected by `data-theme` on <html>, written by `lib/theme/provider.tsx`.
+   Each block overrides Layer 2 only — never a primitive, never a component.
+
+   Every preset must set `--on-primary` alongside `--primary`: getting one
+   without the other is how a themeable site ends up with unreadable buttons.
+   ========================================================================== */
+[data-theme="mitea"] {
+  /* Identical to the `:root` defaults; listed so switching back to the shop's
+     real branding is a plain attribute write, not a removal. */
+  --surface: var(--mitea-cream-50);
+  --surface-sunken: var(--mitea-cream-100);
+  --surface-container: var(--mitea-blossom-200);
+  --surface-inverse: var(--mitea-cocoa-900);
+  --content: var(--mitea-cocoa-800);
+  --content-muted: var(--mitea-cocoa-500);
+  --content-subtle: var(--mitea-cocoa-400);
+  --content-accent: var(--mitea-blossom-700);
+  --on-inverse: var(--mitea-cream-200);
+  --on-inverse-muted: var(--mitea-cocoa-300);
+  --primary: var(--mitea-cocoa-600);
+  --primary-hover: var(--mitea-cocoa-700);
+  --on-primary: var(--mitea-cream-200);
+  --primary-soft: var(--mitea-cocoa-100);
+  --on-primary-soft: var(--mitea-cocoa-800);
+  --accent: var(--mitea-blossom-700);
+  --accent-hover: var(--mitea-blossom-800);
+  --on-accent: var(--mitea-white);
+  --accent-soft: var(--mitea-blossom-200);
+  --on-accent-soft: var(--mitea-blossom-800);
+  --border: var(--mitea-cocoa-200);
+  --border-strong: var(--mitea-cocoa-300);
+  --border-soft: var(--mitea-cocoa-200);
+  --border-highlight: var(--mitea-blossom-400);
+  --focus: var(--mitea-cocoa-600);
+  --tint-brand: var(--mitea-cocoa-600);
+}
+
+/* Pink-led: the shop's walls rather than its wordmark. */
+[data-theme="blossom"] {
+  --surface: var(--mitea-blossom-50);
+  --surface-sunken: var(--mitea-blossom-100);
+  --surface-container: var(--mitea-blossom-200);
+  --surface-inverse: var(--mitea-blossom-900);
+  --content: var(--mitea-cocoa-800);
+  --content-muted: var(--mitea-cocoa-500);
+  --content-subtle: var(--mitea-cocoa-400);
+  --content-accent: var(--mitea-blossom-700);
+  --on-inverse: var(--mitea-blossom-100);
+  --on-inverse-muted: var(--mitea-blossom-300);
+  --primary: var(--mitea-blossom-700);
+  --primary-hover: var(--mitea-blossom-800);
+  --on-primary: var(--mitea-white);
+  --primary-soft: var(--mitea-blossom-200);
+  --on-primary-soft: var(--mitea-blossom-800);
+  --accent: var(--mitea-cocoa-600);
+  --accent-hover: var(--mitea-cocoa-700);
+  --on-accent: var(--mitea-cream-200);
+  --accent-soft: var(--mitea-cocoa-100);
+  --on-accent-soft: var(--mitea-cocoa-800);
+  --border: var(--mitea-blossom-200);
+  --border-strong: var(--mitea-blossom-300);
+  --border-soft: var(--mitea-blossom-200);
+  --border-highlight: var(--mitea-blossom-500);
+  --focus: var(--mitea-blossom-700);
+  --tint-brand: var(--mitea-blossom-700);
+}
+
+/* Green-led: the cup lid. */
+[data-theme="matcha"] {
+  --surface: var(--mitea-cream-50);
+  --surface-sunken: var(--mitea-sage-100);
+  --surface-container: var(--mitea-sage-100);
+  --surface-inverse: var(--mitea-sage-700);
+  --content: var(--mitea-cocoa-800);
+  --content-muted: var(--mitea-cocoa-500);
+  --content-subtle: var(--mitea-cocoa-400);
+  --content-accent: var(--mitea-sage-700);
+  --on-inverse: var(--mitea-cream-200);
+  --on-inverse-muted: var(--mitea-sage-300);
+  --primary: var(--mitea-sage-700);
+  --primary-hover: var(--mitea-cocoa-700);
+  --on-primary: var(--mitea-white);
+  --primary-soft: var(--mitea-sage-100);
+  --on-primary-soft: var(--mitea-sage-700);
+  --accent: var(--mitea-blossom-700);
+  --accent-hover: var(--mitea-blossom-800);
+  --on-accent: var(--mitea-white);
+  --accent-soft: var(--mitea-blossom-200);
+  --on-accent-soft: var(--mitea-blossom-800);
+  --border: var(--mitea-cocoa-200);
+  --border-strong: var(--mitea-cocoa-300);
+  --border-soft: var(--mitea-sage-300);
+  --border-highlight: var(--mitea-sage-500);
+  --focus: var(--mitea-sage-700);
+  --tint-brand: var(--mitea-sage-700);
+}
+
+[data-theme="taro"] {
+  --surface: var(--mitea-cream-50);
+  --surface-sunken: var(--mitea-taro-100);
+  --surface-container: var(--mitea-taro-100);
+  --surface-inverse: var(--mitea-taro-800);
+  --content: var(--mitea-cocoa-800);
+  --content-muted: var(--mitea-cocoa-500);
+  --content-subtle: var(--mitea-cocoa-400);
+  --content-accent: var(--mitea-taro-600);
+  --on-inverse: var(--mitea-cream-200);
+  --on-inverse-muted: var(--mitea-taro-400);
+  --primary: var(--mitea-taro-700);
+  --primary-hover: var(--mitea-taro-600);
+  --on-primary: var(--mitea-white);
+  --primary-soft: var(--mitea-taro-200);
+  --on-primary-soft: var(--mitea-taro-800);
+  --accent: var(--mitea-blossom-700);
+  --accent-hover: var(--mitea-blossom-800);
+  --on-accent: var(--mitea-white);
+  --accent-soft: var(--mitea-blossom-200);
+  --on-accent-soft: var(--mitea-blossom-800);
+  --border: var(--mitea-cocoa-200);
+  --border-strong: var(--mitea-cocoa-300);
+  --border-soft: var(--mitea-taro-200);
+  --border-highlight: var(--mitea-taro-400);
+  --focus: var(--mitea-taro-600);
+  --tint-brand: var(--mitea-taro-600);
+}
+
+/* ==========================================================================
+   Tailwind registration
+   Maps Layer 2 onto utility classes: bg-surface-raised, text-content-muted,
+   border-border-soft, shadow-card, rounded-card, font-display, …
+   `inline` keeps the `var()` reference in the generated utility rather than
+   resolving it at build time, which is what lets a preset override take
+   effect at runtime.
+   ========================================================================== */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-container: var(--surface-container);
+  --color-surface-inverse: var(--surface-inverse);
+
+  --color-content: var(--content);
+  --color-content-muted: var(--content-muted);
+  --color-content-subtle: var(--content-subtle);
+  --color-content-accent: var(--content-accent);
+  --color-on-inverse: var(--on-inverse);
+  --color-on-inverse-muted: var(--on-inverse-muted);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-on-primary-soft: var(--on-primary-soft);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent-soft: var(--on-accent-soft);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-border-soft: var(--border-soft);
+  --color-border-highlight: var(--border-highlight);
+  --color-focus: var(--focus);
+
+  --color-success-bg: var(--success-bg);
+  --color-success-fg: var(--success-fg);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-fg: var(--danger-fg);
+  --color-warning-bg: var(--warning-bg);
+  --color-warning-fg: var(--warning-fg);
+
+  --shadow-card: var(--elevation-card);
+  --shadow-card-hover: var(--elevation-card-hover);
+  --shadow-raised: var(--elevation-raised);
+  --shadow-overlay: var(--elevation-overlay);
+  --shadow-control: var(--elevation-control);
+
+  --radius-control: var(--shape-control);
+  --radius-card: var(--shape-card);
+  --radius-image: var(--shape-image);
+  --radius-pill: var(--shape-pill);
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-baloo);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+body {
+  background: var(--surface);
+  color: var(--content);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Every interactive element gets the same brand-following focus ring. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--shape-control);
+}
+
+/* The menu page scrolls to category anchors that sit under a sticky header. */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Native <dialog> backdrop — the item customiser and the mobile nav both use it. */
+dialog::backdrop {
+  background: color-mix(in oklab, var(--tint-ink) 55%, transparent);
+  backdrop-filter: blur(2px);
+}
