@@ -5,6 +5,8 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ThemePicker } from "@/components/ui/theme-picker";
 import { CartProvider } from "@/lib/cart/context";
+import { fetchCatalogData } from "@/lib/catalog/airtable";
+import { CatalogProvider } from "@/lib/catalog/context";
 import { SITE } from "@/lib/site-config";
 import { ThemeProvider, ThemeScript } from "@/lib/theme/provider";
 import "./globals.css";
@@ -43,7 +45,18 @@ export const metadata: Metadata = {
  */
 const showThemePicker = process.env.NEXT_PUBLIC_SHOW_THEME_PICKER === "1";
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+/**
+ * The catalog is fetched here, once, and handed to the browser through
+ * <CatalogProvider>.
+ *
+ * It belongs in the layout rather than in each page because the cart is global:
+ * the header badge and the mobile bar price themselves on every route, so the
+ * menu has to be in the browser everywhere, not only on /menu. The fetch is
+ * cached and tag-revalidated, so this does not cost a round trip per request.
+ */
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const catalog = await fetchCatalogData();
+
   return (
     <html
       lang="en"
@@ -55,13 +68,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-full flex-col">
         <ThemeProvider>
-          <CartProvider>
-            <SiteHeader />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
-            <MobileCartBar />
-            {showThemePicker ? <ThemePicker /> : null}
-          </CartProvider>
+          <CatalogProvider data={catalog}>
+            <CartProvider>
+              <SiteHeader />
+              <main className="flex-1">{children}</main>
+              <SiteFooter />
+              <MobileCartBar />
+              {showThemePicker ? <ThemePicker /> : null}
+            </CartProvider>
+          </CatalogProvider>
         </ThemeProvider>
       </body>
     </html>

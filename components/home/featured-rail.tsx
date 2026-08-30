@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getPopularItems } from "@/lib/catalog";
+import { useCatalog } from "@/lib/catalog/context";
 import type { MenuItem } from "@/lib/types";
 import { ItemCard } from "@/components/menu/item-card";
 import { ItemCustomizer } from "@/components/menu/item-customizer";
@@ -15,7 +15,7 @@ import { Container, Eyebrow } from "@/components/ui/primitives";
  * ordering surface rather than a link farm.
  */
 export function FeaturedRail() {
-  const items = getPopularItems();
+  const items = useCatalog().getPopularItems();
   const [activeItem, setActiveItem] = useState<MenuItem | null>(null);
 
   return (

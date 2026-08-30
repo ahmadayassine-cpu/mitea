@@ -1,6 +1,6 @@
 "use client";
 
-import { hasChoices } from "@/lib/catalog";
+import { hasChoices } from "@/lib/catalog/catalog";
 import { formatMoney } from "@/lib/pricing";
 import type { MenuItem } from "@/lib/types";
 import { MediaSlot } from "@/components/ui/media-slot";
@@ -23,14 +23,21 @@ export function ItemCard({
   /** `rail` is the fixed-width variant used by the home page's horizontal scroller. */
   layout?: "grid" | "rail";
 }) {
+  // Sold out outranks a tag: "Most ordered" on something nobody can order
+  // reads as a bug.
   const badge = item.tags[0];
 
   return (
     <button
       type="button"
       onClick={() => onSelect(item)}
-      className={`group flex flex-col overflow-hidden rounded-card border border-border-soft bg-surface-raised text-left shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-border-highlight hover:shadow-card-hover ${
+      disabled={item.soldOut}
+      className={`group flex flex-col overflow-hidden rounded-card border border-border-soft bg-surface-raised text-left shadow-card transition-all duration-200 ${
         layout === "rail" ? "w-64 shrink-0" : "w-full"
+      } ${
+        item.soldOut
+          ? "cursor-not-allowed opacity-55 grayscale"
+          : "hover:-translate-y-0.5 hover:border-border-highlight hover:shadow-card-hover"
       }`}
     >
       <div className="relative">
@@ -41,13 +48,15 @@ export function ItemCard({
           className="aspect-[4/3] w-full"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
         />
-        {badge ? (
-          <span className="absolute top-3 left-3">
+        <span className="absolute top-3 left-3">
+          {item.soldOut ? (
+            <Badge tone="neutral">Sold out</Badge>
+          ) : badge ? (
             <Badge tone={badge === "vegan" ? "success" : "accent"}>
               {TAG_LABELS[badge] ?? badge}
             </Badge>
-          </span>
-        ) : null}
+          ) : null}
+        </span>
       </div>
 
       <div className="flex flex-1 flex-col p-4">

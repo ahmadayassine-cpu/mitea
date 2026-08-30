@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { getMenu } from "@/lib/catalog";
+import { useCatalog } from "@/lib/catalog/context";
 import type { MenuItem } from "@/lib/types";
 import { Container } from "@/components/ui/primitives";
 import { ItemCard } from "./item-card";
@@ -11,12 +11,12 @@ import { ItemCustomizer } from "./item-customizer";
  * The full menu: sticky category nav over one long scroller, matching the
  * reference site's shape.
  *
- * The catalog is imported rather than passed as props because the cart already
- * pulls it into the client bundle to price lines — passing it down again would
- * serialise all 44 items into the RSC payload for no gain.
+ * The menu comes from the catalog context rather than props: the cart already
+ * needs the whole catalog in the browser to price its lines, so reading it from
+ * there costs nothing and keeps this component free of a menu-shaped prop.
  */
 export function MenuBrowser() {
-  const menu = getMenu();
+  const menu = useCatalog().getMenu();
   const [activeItem, setActiveItem] = useState<MenuItem | null>(null);
   const [activeCategory, setActiveCategory] = useState(menu[0]?.category.slug ?? "");
   const navRef = useRef<HTMLDivElement>(null);

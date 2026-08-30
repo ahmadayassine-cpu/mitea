@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CATEGORIES } from "@/lib/catalog";
+import { getCatalog } from "@/lib/catalog/airtable";
 import { SITE, formattedAddress } from "@/lib/site-config";
 import { Accordion } from "@/components/ui/accordion";
 import { MediaSlot } from "@/components/ui/media-slot";
@@ -106,17 +106,33 @@ export function Welcome() {
   );
 }
 
-export function CategoryGrid() {
+/**
+ * The heading used to say "Eight ways to start" because there were eight
+ * sections. Sections are the owner's to add now, so it counts them — spelled
+ * out up to twelve, which is well past any menu this shop will print.
+ */
+const NUMBER_WORDS = [
+  "Zero", "One", "Two", "Three", "Four", "Five", "Six",
+  "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve",
+];
+
+function countWord(count: number): string {
+  return NUMBER_WORDS[count] ?? String(count);
+}
+
+export async function CategoryGrid() {
+  const { categories } = await getCatalog();
+
   return (
     <Section>
       <SectionHeading
         eyebrow="The menu"
-        title="Eight ways to start"
+        title={`${countWord(categories.length)} ways to start`}
         description="From the classics to the cheese-foam-capped Chizu series."
       />
 
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {CATEGORIES.map((category) => (
+        {categories.map((category) => (
           <Link
             key={category.id}
             href={`/menu#${category.slug}`}

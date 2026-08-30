@@ -1,4 +1,4 @@
-import { getItem, getModifierGroups } from "@/lib/catalog";
+import type { Catalog } from "@/lib/catalog/catalog";
 import type { CartLine } from "@/lib/types";
 
 /**
@@ -12,7 +12,7 @@ import type { CartLine } from "@/lib/types";
  */
 export const CART_STORAGE_KEY = "mitea.cart.v1";
 
-export function loadCart(): CartLine[] {
+export function loadCart(catalog: Catalog): CartLine[] {
   try {
     const raw = localStorage.getItem(CART_STORAGE_KEY);
     if (!raw) return [];
@@ -20,7 +20,7 @@ export function loadCart(): CartLine[] {
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
 
-    return parsed.filter(isUsableLine);
+    return parsed.filter((line) => isUsableLine(catalog, line));
   } catch {
     // Corrupt JSON or storage unavailable. An empty cart beats a crash.
     return [];
@@ -40,7 +40,7 @@ export function saveCart(lines: readonly CartLine[]): void {
  * the item is on the menu, and every option id still exists in its group.
  * Anything else is dropped silently rather than shown at a wrong price.
  */
-function isUsableLine(value: unknown): value is CartLine {
+function isUsableLine(catalog: Catalog, value: unknown): value is CartLine {
   if (typeof value !== "object" || value === null) return false;
   const line = value as Partial<CartLine>;
 
@@ -54,10 +54,10 @@ function isUsableLine(value: unknown): value is CartLine {
   if (typeof line.selections !== "object" || line.selections === null) return false;
   if (line.notes !== undefined && typeof line.notes !== "string") return false;
 
-  const item = getItem(line.itemId);
+  const item = catalog.getItem(line.itemId);
   if (!item) return false;
 
-  const groups = getModifierGroups(item.modifierGroupIds);
+  const groups = catalog.getModifierGroups(item.modifierGroupIds);
   const groupIds = new Set(groups.map((group) => group.id));
 
   for (const [groupId, optionIds] of Object.entries(line.selections)) {

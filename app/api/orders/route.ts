@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getItem, getModifierGroups } from "@/lib/catalog";
+import { getCatalog } from "@/lib/catalog/airtable";
 import { priceLine, priceOrder, validateSelections } from "@/lib/pricing";
 import { getOrderStore } from "@/lib/orders/store";
 import type { OrderLine, OrderLineOption } from "@/lib/orders/types";
@@ -59,10 +59,11 @@ export async function POST(request: Request) {
 
   // Resolve and re-price every line. A line naming an item or option that is
   // not on the menu is rejected rather than quietly priced at zero.
+  const catalog = await getCatalog();
   const orderLines: OrderLine[] = [];
 
   for (const line of lines) {
-    const item = getItem(line.itemId);
+    const item = catalog.getItem(line.itemId);
     if (!item) {
       return Response.json(
         { error: `"${line.itemId}" is no longer on the menu.` },
@@ -70,7 +71,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const { valid, errors } = validateSelections(item, line.selections);
+    if (item.soldOut) {
+      return Response.json(
+        { error: `${item.name} just sold out.` },
+        { status: 409 },
+      );
+    }
+
+    const { valid, errors } = validateSelections(catalog, item, line.selections);
     if (!valid) {
       return Response.json(
         { error: `Check your choices for ${item.name}.`, issues: errors },
@@ -78,7 +86,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const groups = getModifierGroups(item.modifierGroupIds);
+    const groups = catalog.getModifierGroups(item.modifierGroupIds);
     const options: OrderLineOption[] = [];
 
     for (const group of groups) {
@@ -123,7 +131,7 @@ export async function POST(request: Request) {
     selections: line.selections,
     notes: line.notes,
   }));
-  const { subtotal, tax, total } = priceOrder(cartLines);
+  const { subtotal, tax, total } = priceOrder(catalog, cartLines);
 
   const order = await getOrderStore().create({
     customer,

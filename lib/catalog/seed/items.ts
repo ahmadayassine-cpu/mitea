@@ -3,6 +3,10 @@ import type { MenuItem } from "@/lib/types";
 /**
  * The Mitea menu.
  *
+ * **Seed data — not read at runtime.** The menu lives in Airtable now; this is
+ * what the base was populated from, and what `npm run seed:airtable` re-imports.
+ * See docs/airtable-catalog.md.
+ *
  * **Names and `basePrice` values are transcribed verbatim from the owner's menu
  * document and must not be edited without a new source.** Sections and the
  * items within them are in that document's order too, which is the order they

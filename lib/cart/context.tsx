@@ -8,6 +8,7 @@ import {
   useMemo,
   useReducer,
 } from "react";
+import { useCatalog } from "@/lib/catalog/context";
 import { priceOrder } from "@/lib/pricing";
 import type { CartLine, OrderTotals } from "@/lib/types";
 import { INITIAL_CART_STATE, cartReducer } from "./reducer";
@@ -34,11 +35,14 @@ interface CartContextValue {
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
+  const catalog = useCatalog();
   const [{ lines, ready }, dispatch] = useReducer(cartReducer, INITIAL_CART_STATE);
 
   useEffect(() => {
-    dispatch({ type: "hydrate", lines: loadCart() });
-  }, []);
+    // Validated against the catalog as it stands right now, so a line naming a
+    // drink that has since left the menu is dropped rather than re-priced.
+    dispatch({ type: "hydrate", lines: loadCart(catalog) });
+  }, [catalog]);
 
   useEffect(() => {
     // `ready` guards the first pass: without it the initial empty state would
@@ -74,7 +78,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     () => ({
       lines,
       count: lines.reduce((sum, line) => sum + line.quantity, 0),
-      totals: priceOrder(lines),
+      totals: priceOrder(catalog, lines),
       ready,
       addLine,
       updateLine,
@@ -82,7 +86,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       removeLine,
       clear,
     }),
-    [lines, ready, addLine, updateLine, setQuantity, removeLine, clear],
+    [catalog, lines, ready, addLine, updateLine, setQuantity, removeLine, clear],
   );
 
   return <CartContext value={value}>{children}</CartContext>;

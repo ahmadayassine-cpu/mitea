@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { getModifierGroups } from "@/lib/catalog";
 import { useCart } from "@/lib/cart/context";
+import { useCatalog } from "@/lib/catalog/context";
 import {
   defaultSelections,
   formatMoney,
@@ -32,10 +32,14 @@ export function ItemCustomizer({
   onClose: () => void;
 }) {
   const { addLine } = useCart();
+  const catalog = useCatalog();
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  const groups = useMemo(() => getModifierGroups(item.modifierGroupIds), [item]);
-  const [selections, setSelections] = useState(() => defaultSelections(item));
+  const groups = useMemo(
+    () => catalog.getModifierGroups(item.modifierGroupIds),
+    [catalog, item],
+  );
+  const [selections, setSelections] = useState(() => defaultSelections(catalog, item));
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState("");
   const [showErrors, setShowErrors] = useState(false);
@@ -44,7 +48,7 @@ export function ItemCustomizer({
     dialogRef.current?.showModal();
   }, []);
 
-  const { valid, errors } = validateSelections(item, selections);
+  const { valid, errors } = validateSelections(catalog, item, selections);
   const { unitPrice, lineTotal } = priceLine(item, groups, selections, quantity);
 
   function toggle(group: ModifierGroup, optionId: string) {
@@ -140,7 +144,7 @@ export function ItemCustomizer({
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                   {group.options.map((option) => {
                     const active = chosen.includes(option.id);
-                    const disabled = atCap && !active;
+                    const disabled = option.soldOut === true || (atCap && !active);
 
                     return (
                       <label
@@ -161,7 +165,9 @@ export function ItemCustomizer({
                           className="sr-only"
                         />
                         <span>{option.name}</span>
-                        {option.priceDelta > 0 ? (
+                        {option.soldOut ? (
+                          <span className="text-xs opacity-80">Sold out</span>
+                        ) : option.priceDelta > 0 ? (
                           <span className="text-xs tabular-nums opacity-80">
                             +{formatMoney(option.priceDelta)}
                           </span>
