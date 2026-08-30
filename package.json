@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit",
+    "seed:airtable": "node scripts/seed-airtable.mts",
+    "menu:refresh": "node scripts/clear-catalog-cache.mjs"
   },
   "dependencies": {
     "next": "16.3.0",

@@ -26,7 +26,7 @@ export interface DayHours {
 }
 
 export const SITE = {
-  name: "Mitea",
+  name: "MiTea",
   /**
    * The shop's own strapline on its Square site is:
    *
@@ -38,9 +38,9 @@ export const SITE = {
    * on a site that cannot sell it is worse branding than a narrower true claim.
    * Swap both strings below once the food categories land.
    */
-  tagline: "Mitea, brewed fresh. Mochi donuts, fried to order.",
+  tagline: "MiTea, brewed fresh. Mochi donuts, fried to order.",
   description:
-    "Mitea serves fresh-brewed milk teas, fruit teas, cheese-foam Chizu drinks and mochi donuts made through the day. Order online for pickup.",
+    "MiTea serves fresh-brewed milk teas, fruit teas, cheese-foam Chizu drinks and mochi donuts made through the day. Order online for pickup.",
 
   phone: "(555) 010-0100",
   email: "hello@mitea.example",

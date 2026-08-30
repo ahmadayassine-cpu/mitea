@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { getItem, getModifierGroups } from "@/lib/catalog";
 import { useCart } from "@/lib/cart/context";
+import { useCatalog } from "@/lib/catalog/context";
 import { formatMoney, priceCartLine } from "@/lib/pricing";
 import type { CartLine } from "@/lib/types";
 import { MediaSlot } from "@/components/ui/media-slot";
@@ -103,13 +103,14 @@ function CartRow({
   onQuantityChange: (quantity: number) => void;
   onRemove: () => void;
 }) {
-  const item = getItem(line.itemId);
+  const catalog = useCatalog();
+  const item = catalog.getItem(line.itemId);
   // `loadCart` drops lines whose item has left the menu, so this is a guard for
   // an item removed mid-session rather than an expected state.
   if (!item) return null;
 
-  const priced = priceCartLine(line);
-  const groups = getModifierGroups(item.modifierGroupIds);
+  const priced = priceCartLine(catalog, line);
+  const groups = catalog.getModifierGroups(item.modifierGroupIds);
 
   // Flattened to a readable summary: "Large · 50% · Mitea, Cheese foam".
   const chosen = groups

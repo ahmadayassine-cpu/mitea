@@ -3,6 +3,10 @@ import type { ModifierGroup } from "@/lib/types";
 /**
  * Shared modifier groups, referenced by id from `items.ts`.
  *
+ * **Seed data — not read at runtime.** The menu lives in Airtable now; this is
+ * what the base was populated from, and what `npm run seed:airtable` re-imports.
+ * See docs/airtable-catalog.md.
+ *
  * TODO(owner): every upcharge below is a placeholder. The source menu document
  * lists drink prices only — it says nothing about size, milk or topping
  * pricing, and it does not name the mochi donut flavours. Confirm this whole
@@ -66,7 +70,7 @@ export const MODIFIER_GROUPS: ModifierGroup[] = [
     min: 0,
     max: 4,
     options: [
-      { id: "top-mitea", name: "Mitea", priceDelta: 75 },
+      { id: "top-mitea", name: "MiTea", priceDelta: 75 },
       { id: "top-lychee-jelly", name: "Lychee jelly", priceDelta: 75 },
       { id: "top-grass-jelly", name: "Grass jelly", priceDelta: 75 },
       { id: "top-aloe", name: "Aloe vera", priceDelta: 75 },
@@ -115,15 +119,3 @@ for (const count of [1, 3, 6, 12]) {
   MODIFIER_GROUPS.push(donutFlavourGroup(count));
 }
 
-const GROUPS_BY_ID = new Map(MODIFIER_GROUPS.map((group) => [group.id, group]));
-
-export function getModifierGroup(id: string): ModifierGroup | undefined {
-  return GROUPS_BY_ID.get(id);
-}
-
-/** Resolves an item's group ids to groups, silently dropping unknown ids. */
-export function getModifierGroups(ids: readonly string[]): ModifierGroup[] {
-  return ids
-    .map((id) => GROUPS_BY_ID.get(id))
-    .filter((group): group is ModifierGroup => group !== undefined);
-}

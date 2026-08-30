@@ -16,6 +16,8 @@ export interface ModifierOption {
   priceDelta: Money;
   /** Pre-selected when the customiser opens. Only meaningful on `single` groups. */
   isDefault?: boolean;
+  /** 86'd for the day: still listed, but greyed out and rejected by the API. */
+  soldOut?: boolean;
 }
 
 /**
@@ -53,8 +55,10 @@ export interface MenuItem {
   /** Path under /public once real photography exists; null renders a placeholder. */
   image?: string | null;
   tags: MenuItemTag[];
-  /** Ids into `MODIFIER_GROUPS`. Order here is the order shown in the customiser. */
+  /** Ids of the item's modifier groups, in the order shown in the customiser. */
   modifierGroupIds: string[];
+  /** 86'd for the day: still on the menu, greyed out and rejected by the API. */
+  soldOut?: boolean;
   /**
    * Reserved for the Square POS integration (not built). When the catalog is
    * synced, this holds the Square CatalogObject id so an order line can name

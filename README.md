@@ -10,8 +10,13 @@ Next.js 16 · React 19 · Tailwind CSS v4 · TypeScript.
 
 ```bash
 npm install
-npm run dev            # http://localhost:3000
+cp .env.local.example .env.local   # then fill in the Airtable token
+npm run dev                        # http://localhost:3000
 ```
+
+The menu is read from Airtable, so the site needs `AIRTABLE_API_KEY` and
+`AIRTABLE_BASE_ID` before it will render anything. See
+[docs/airtable-catalog.md](docs/airtable-catalog.md).
 
 | Script | What it does |
 | --- | --- |
@@ -19,6 +24,8 @@ npm run dev            # http://localhost:3000
 | `npm run build` | Production build |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | `next typegen && tsc --noEmit` |
+| `npm run seed:airtable` | One-way import of `lib/catalog/seed/` into the Airtable base |
+| `npm run menu:refresh` | Drops the cached menu so the next request re-reads Airtable |
 
 To preview the brand presets, start the dev server with
 `NEXT_PUBLIC_SHOW_THEME_PICKER=1` and a switcher appears in the bottom-right.
@@ -29,7 +36,7 @@ It is not part of the customer-facing site.
 ```
 app/                 routes (home, menu, cart, checkout, content pages, /api/orders)
 components/          UI, grouped by where it's used
-lib/catalog/         the menu: categories, items, modifier groups
+lib/catalog/         the menu, read from Airtable (seed/ holds the original import)
 lib/cart/            cart state (useReducer + localStorage)
 lib/orders/          order persistence behind the OrderStore interface
 lib/pricing.ts       pricing — shared by the client cart AND the server
@@ -115,9 +122,9 @@ taken at the counter), delivery, accounts and rewards.
 Search the codebase for `TODO(owner)`. The menu document supplied item names and
 prices and nothing else, so these are placeholders:
 
-- Item descriptions — draft copy, in `lib/catalog/items.ts`
-- Topping, size and milk upcharges, and the mochi donut flavour list —
-  `lib/catalog/modifiers.ts`
+- Item descriptions — draft copy, now editable in Airtable
+- Topping, size and milk upcharges, and the mochi donut flavour list — the
+  Modifier Groups and Modifier Options tables in Airtable
 - Sales tax rate, phone, email, hours, social links — `lib/site-config.ts`
   (the address is real; the tax rate is **not** the Golden Valley / Hennepin
   County rate and must be confirmed before launch)
@@ -157,7 +164,8 @@ load over an API afterwards, so they could not be read from the same fetch and
 are **not** guessable. Getting them needs either the Square catalog via an
 authenticated API call, or a menu export from the owner.
 
-Nothing about the site's structure blocks this: adding a category is an entry in
-`lib/catalog/categories.ts` plus its items in `lib/catalog/items.ts`. Food items
-would want their own modifier groups (bread, protein, spice) rather than the
-drink ones — the `ModifierGroup` model already supports that.
+Nothing about the site's structure blocks this any more: a category is a row in
+Airtable and so are its items, so the owner can add the missing nine themselves
+once the prices are known. Food items would want their own modifier groups
+(bread, protein, spice) rather than the drink ones — the `ModifierGroup` model
+already supports that.

@@ -1,4 +1,4 @@
-import { getItem, getModifierGroups } from "@/lib/catalog";
+import type { Catalog } from "@/lib/catalog/catalog";
 import { TAX_RATE } from "@/lib/site-config";
 import type {
   CartLine,
@@ -16,6 +16,11 @@ import type {
  * item and option ids and ignores whatever total was submitted — see
  * `app/api/orders/route.ts`. Both call the functions below so the two can never
  * disagree about what a drink costs.
+ *
+ * Every function that has to look an id up takes the catalog as its first
+ * argument rather than importing it: since the menu moved to Airtable there is
+ * no module-level menu to reach for, and passing it makes it obvious that the
+ * cart and the server are pricing against the same fetched generation.
  */
 
 /** `$6.30` from `630`. The only place cents become dollars. */
@@ -54,11 +59,11 @@ export function priceLine(
 }
 
 /** Prices a cart line by id, or `null` if the item is no longer on the menu. */
-export function priceCartLine(line: CartLine): PricedLine | null {
-  const item = getItem(line.itemId);
+export function priceCartLine(catalog: Catalog, line: CartLine): PricedLine | null {
+  const item = catalog.getItem(line.itemId);
   if (!item) return null;
 
-  const groups = getModifierGroups(item.modifierGroupIds);
+  const groups = catalog.getModifierGroups(item.modifierGroupIds);
   return priceLine(item, groups, line.selections, line.quantity);
 }
 
@@ -66,9 +71,9 @@ export function priceCartLine(line: CartLine): PricedLine | null {
  * Totals a cart. Tax is rounded once on the subtotal rather than per line, so
  * the displayed total always equals subtotal + tax exactly.
  */
-export function priceOrder(lines: readonly CartLine[]): OrderTotals {
+export function priceOrder(catalog: Catalog, lines: readonly CartLine[]): OrderTotals {
   const subtotal = lines.reduce((sum, line) => {
-    const priced = priceCartLine(line);
+    const priced = priceCartLine(catalog, line);
     return sum + (priced?.lineTotal ?? 0);
   }, 0);
 
@@ -82,12 +87,13 @@ export function priceOrder(lines: readonly CartLine[]): OrderTotals {
  * hand-built request.
  */
 export function validateSelections(
+  catalog: Catalog,
   item: MenuItem,
   selections: Readonly<Record<string, readonly string[]>>,
 ): { valid: boolean; errors: Record<string, string> } {
   const errors: Record<string, string> = {};
 
-  for (const group of getModifierGroups(item.modifierGroupIds)) {
+  for (const group of catalog.getModifierGroups(item.modifierGroupIds)) {
     const chosen = selections[group.id] ?? [];
     const min = group.min ?? (group.required ? 1 : 0);
     const max = group.max ?? (group.selection === "single" ? 1 : group.options.length);
@@ -97,6 +103,16 @@ export function validateSelections(
     );
     if (unknown.length > 0) {
       errors[group.id] = `Unrecognised choice in ${group.name}.`;
+      continue;
+    }
+
+    // A cart can outlive an availability change: someone picks oat milk, the
+    // shop runs out, and the line is still sitting in their browser.
+    const soldOut = group.options.filter(
+      (option) => option.soldOut && chosen.includes(option.id),
+    );
+    if (soldOut.length > 0) {
+      errors[group.id] = `${soldOut.map((option) => option.name).join(" and ")} just sold out.`;
       continue;
     }
 
@@ -117,11 +133,16 @@ export function validateSelections(
 }
 
 /** Default selections for a freshly opened customiser. */
-export function defaultSelections(item: MenuItem): Record<string, string[]> {
+export function defaultSelections(
+  catalog: Catalog,
+  item: MenuItem,
+): Record<string, string[]> {
   const selections: Record<string, string[]> = {};
 
-  for (const group of getModifierGroups(item.modifierGroupIds)) {
-    const preset = group.options.find((option) => option.isDefault);
+  for (const group of catalog.getModifierGroups(item.modifierGroupIds)) {
+    // A sold-out default would open the dialog on a choice that cannot be
+    // ordered, so it is treated as no default at all and the customer picks.
+    const preset = group.options.find((option) => option.isDefault && !option.soldOut);
     selections[group.id] = preset ? [preset.id] : [];
   }
 

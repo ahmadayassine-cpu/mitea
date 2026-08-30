@@ -3,6 +3,10 @@ import type { MenuCategory } from "@/lib/types";
 /**
  * Menu categories, in the order the source document lists them — which is also
  * the order they appear on /menu and in the sticky category nav.
+ *
+ * **Seed data — not read at runtime.** The menu lives in Airtable now; this is
+ * what the base was populated from, and what `npm run seed:airtable` re-imports.
+ * See docs/airtable-catalog.md.
  */
 export const CATEGORIES: MenuCategory[] = [
   {
