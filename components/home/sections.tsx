@@ -28,7 +28,7 @@ export function Hero() {
         <div>
           <Eyebrow>Fresh brewed daily</Eyebrow>
           <h1 className="font-display text-4xl leading-[1.05] font-bold text-balance sm:text-5xl lg:text-6xl">
-            Mitea worth the walk.
+            MiTea worth the walk.
           </h1>
           <p className="mt-5 max-w-lg text-lg text-content-muted text-pretty">
             {SITE.tagline} Every cup shaken to order — pick your sugar, your ice and
@@ -60,7 +60,7 @@ export function Hero() {
           <div className="absolute -bottom-6 -left-4 hidden w-40 sm:block">
             <MediaSlot
               src="/images/shop-interior.jpg"
-              alt="The Mitea dining room, with cherry blossom walls and hanging lanterns"
+              alt="The MiTea dining room, with cherry blossom walls and hanging lanterns"
               seed="hero-secondary"
               className="aspect-square w-full rounded-image border-4 border-surface-raised shadow-card-hover"
             />
@@ -77,7 +77,7 @@ export function Welcome() {
       <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
         <MediaSlot
           src="/images/shop-interior.jpg"
-          alt="Seating under the painted cherry blossom mural at Mitea"
+          alt="Seating under the painted cherry blossom mural at MiTea"
           seed="welcome"
           className="aspect-[4/3] w-full rounded-image"
         />
@@ -154,7 +154,7 @@ const GALLERY = [
 export function Gallery() {
   return (
     <Section tone="sunken">
-      <SectionHeading eyebrow="In the cup" title="A taste of Mitea" />
+      <SectionHeading eyebrow="In the cup" title="A taste of MiTea" />
       <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3">
         {GALLERY.map((tile) => (
           <MediaSlot
@@ -181,7 +181,7 @@ export function CateringCta() {
             Catering
           </p>
           <h2 className="font-display text-3xl font-bold text-balance sm:text-4xl">
-            Bring the Mitea bar to them
+            Bring the MiTea bar to them
           </h2>
           <p className="mt-4 text-lg text-on-inverse-muted text-pretty">
             Office parties, birthdays, graduations. We&apos;ll set up with a spread of
@@ -215,7 +215,7 @@ const FEATURES = [
 export function WhyMitea() {
   return (
     <Section>
-      <SectionHeading eyebrow="Why Mitea" title="What you can count on" />
+      <SectionHeading eyebrow="Why MiTea" title="What you can count on" />
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((feature) => (
           <Card key={feature.title} className="p-6">
@@ -236,7 +236,7 @@ export function VisitUs() {
     <Section tone="container">
       <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
         <div>
-          <Eyebrow>📍 Visit Mitea</Eyebrow>
+          <Eyebrow>📍 Visit MiTea</Eyebrow>
           <h2 className="font-display text-3xl font-bold text-balance sm:text-4xl">
             Come find us
           </h2>
@@ -260,7 +260,7 @@ export function VisitUs() {
 
         <MediaSlot
           src={null}
-          alt="Map of the Mitea location"
+          alt="Map of the MiTea location"
           seed="map"
           glyph="🗺️"
           className="aspect-[4/3] w-full rounded-image"

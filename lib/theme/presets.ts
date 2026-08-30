@@ -8,7 +8,7 @@
 export const THEME_PRESETS = [
   {
     id: "mitea",
-    name: "Mitea",
+    name: "MiTea",
     note: "The logo palette: cocoa brown, donut pink, cream.",
   },
   { id: "blossom", name: "Blossom", note: "Pink-led, like the shop walls." },
